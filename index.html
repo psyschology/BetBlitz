@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetBlitz - Ultimate Betting Experience</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gold-gradient: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            --neon-blue: #00d4ff;
+            --neon-purple: #b347d9;
+            --dark-bg: #0a0b0f;
+            --card-bg: #1a1d29;
+            --border-color: #2a2d3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(26, 29, 41, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-strong {
+            background: rgba(26, 29, 41, 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Neon glow effects */
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .neon-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Advanced button styles */
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal animations */
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Carousel enhancements */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-overlay {
+            background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        /* Live indicator */
+        .live-indicator {
+            position: relative;
+        }
+
+        .live-indicator::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        /* Betting odds animation */
+        .odds-button {
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .odds-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.3s;
+        }
+
+        .odds-button:hover::before {
+            left: 100%;
+        }
+
+        .odds-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Game card effects */
+        .game-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.1), rgba(179, 71, 217, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px) scale(1.03);
+        }
+
+        /* Responsive design enhancements */
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 2rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 15px 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Enhanced typography */
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div id="particles-js"></div>
+
+    <!-- Notification container -->
+    <div id="notification" class="notification">
+        <div class="flex items-center space-x-3">
+            <div class="loading-spinner"></div>
+            <span id="notification-text">Welcome to BetBlitz!</span>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm"></div>
+        <div class="glass-strong w-full max-w-md p-8 rounded-2xl shadow-2xl relative modal-enter">
+            <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                    <i class="ph ph-user text-2xl text-white"></i>
+                </div>
+                <h2 class="text-3xl font-black gradient-text">Welcome Back!</h2>
+                <p class="text-gray-400 mt-2">Log in to continue your winning streak</p>
+            </div>
+            <form class="space-y-6" onsubmit="handleLogin(event)">
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-300 block">Email Address</label>
+                    <input type="email" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-300 block">Password</label>
+                    <input type="password" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="rounded border-gray-600 bg-gray-800">
+                        <span class="text-gray-400">Remember me</span>
+                    </label>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full btn-primary py-4 rounded-xl text-lg font-bold">
+                    LOG IN
+                </button>
+            </form>
+            <div class="mt-8 text-center">
+                <p class="text-gray-400">Don't have an account?</p>
+                <button onclick="switchModal('login-modal', 'signup-modal')" class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm"></div>
+        <div class="glass-strong w-full max-w-md p-8 rounded-2xl shadow-2xl relative modal-enter">
+            <button onclick="closeModal('signup-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center">
+                    <i class="ph ph-user-plus text-2xl text-white"></i>
+                </div>
+                <h2 class="text-3xl font-black gradient-text">Join BetBlitz!</h2>
+                <p class="text-gray-400 mt-2">Create your account and start winning</p>
+            </div>
+            <form class="space-y-6" onsubmit="handleSignup(event)">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-300 block">First Name</label>
+                        <input type="text" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-300 block">Last Name</label>
+                        <input type="text" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-300 block">Email Address</label>
+                    <input type="email" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-300 block">Create Password</label>
+                    <input type="password" required class="w-full bg-gray-800/50 border border-gray-600 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                </div>
+                <div class="flex items-start space-x-3">
+                    <input type="checkbox" required class="mt-1 rounded border-gray-600 bg-gray-800">
+                    <label class="text-sm text-gray-400">
+                        I agree to the <a href="#" class="text-purple-400 hover:text-purple-300">Terms of Service</a> and <a href="#" class="text-purple-400 hover:text-purple-300">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="w-full btn-primary py-4 rounded-xl text-lg font-bold">
+                    CREATE ACCOUNT
+                </button>
+            </form>
+            <div class="mt-8 text-center">
+                <p class="text-gray-400">Already have an account?</p>
+                <button onclick="switchModal('signup-modal', 'login-modal')" class="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="glass sticky top-0 z-40 border-b border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="ph ph-lightning text-xl text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-black neon-text">BetBlitz</h1>
+                            <p class="text-xs text-gray-400 -mt-1">Ultimate Experience</p>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="#sports" class="text-blue-400 font-semibold hover:text-blue-300 transition-colors">Sports</a>
+                        <a href="#casino" class="text-gray-300 font-semibold hover:text-white transition-colors">Casino</a>
+                        <a href="#live" class="text-gray-300 font-semibold hover:text-white transition-colors">Live</a>
+                        <a href="#promotions" class="text-gray-300 font-semibold hover:text-white transition-colors">Promotions</a>
+                    </nav>
+
+                    <!-- Action Buttons -->
+                    <div class="hidden md:flex items-center space-x-3">
+                        <button onclick="openModal('login-modal')" class="btn-secondary px-6 py-2 rounded-full text-sm">
+                            LOG IN
+                        </button>
+                        <button onclick="openModal('signup-modal')" class="btn-primary px-6 py-2 rounded-full text-sm">
+                            SIGN UP
+                        </button>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden text-white">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden border-t border-gray-800">
+                <div class="px-4 py-6 space-y-4">
+                    <nav class="space-y-4">
+                        <a href="#sports" class="block text-blue-400 font-semibold">Sports</a>
+                        <a href="#casino" class="block text-gray-300 font-semibold">Casino</a>
+                        <a href="#live" class="block text-gray-300 font-semibold">Live</a>
+                        <a href="#promotions" class="block text-gray-300 font-semibold">Promotions</a>
+                    </nav>
+                    <div class="pt-4 border-t border-gray-800 space-y-3">
+                        <button onclick="openModal('login-modal')" class="w-full btn-secondary py-3 rounded-full">
+                            LOG IN
+                        </button>
+                        <button onclick="openModal('signup-modal')" class="w-full btn-primary py-3 rounded-full">
+                            SIGN UP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+            <!-- Hero Carousel -->
+            <section class="carousel-container h-96 md:h-[600px] neon-glow">
+                <div id="hero-carousel" class="relative w-full h-full">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=2070&auto=format&fit=crop" alt="Sports Betting" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 carousel-overlay flex flex-col justify-center items-center text-center p-8">
+                            <h2 class="hero-text text-4xl md:text-7xl font-black text-shadow mb-6 floating">
+                                SPORTS <span class="gradient-text">PARADISE</span>
+                            </h2>
+                            <p class="text-lg md:text-2xl text-gray-200 max-w-3xl mb-8 text-shadow">
+                                Experience the thrill of live sports betting with the best odds in the industry
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button class="btn-primary px-8 py-4 rounded-full text-lg neon-glow">
+                                    <i class="ph ph-play mr-2"></i>
+                                    START BETTING
+                                </button>
+                                <button class="btn-secondary px-8 py-4 rounded-full text-lg">
+                                    <i class="ph ph-chart-line mr-2"></i>
+                                    VIEW ODDS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=2070&auto=format&fit=crop" alt="Live Casino" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 carousel-overlay flex flex-col justify-center items-center text-center p-8">
+                            <h2 class="hero-text text-4xl md:text-7xl font-black text-shadow mb-6 floating">
+                                LIVE <span class="gradient-text">CASINO</span>
+                            </h2>
+                            <p class="text-lg md:text-2xl text-gray-200 max-w-3xl mb-8 text-shadow">
+                                Real dealers, real action, real winnings - 24/7 premium casino experience
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button class="btn-primary px-8 py-4 rounded-full text-lg neon-glow">
+                                    <i class="ph ph-cards mr-2"></i>
+                                    PLAY NOW
+                                </button>
+                                <button class="btn-secondary px-8 py-4 rounded-full text-lg">
+                                    <i class="ph ph-gift mr-2"></i>
+                                    CLAIM BONUS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop" alt="Esports" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 carousel-overlay flex flex-col justify-center items-center text-center p-8">
+                            <h2 class="hero-text text-4xl md:text-7xl font-black text-shadow mb-6 floating">
+                                <span class="gradient-text">ESPORTS</span> ARENA
+                            </h2>
+                            <p class="text-lg md:text-2xl text-gray-200 max-w-3xl mb-8 text-shadow">
+                                Bet on the biggest esports tournaments and championships worldwide
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button class="btn-primary px-8 py-4 rounded-full text-lg neon-glow">
+                                    <i class="ph ph-game-controller mr-2"></i>
+                                    BET ESPORTS
+                                </button>
+                                <button class="btn-secondary px-8 py-4 rounded-full text-lg">
+                                    <i class="ph ph-trophy mr-2"></i>
+                                    TOURNAMENTS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Indicators -->
+                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
+                    <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 transition-all duration-300" data-slide="0"></button>
+                    <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 transition-all duration-300" data-slide="1"></button>
+                    <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 transition-all duration-300" data-slide="2"></button>
+                </div>
+            </section>
+
+            <!-- Live Matches -->
+            <section id="sports">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black text-glow">Live & Upcoming Matches</h2>
+                        <p class="text-gray-400 mt-2">Real-time odds and live betting opportunities</p>
+                    </div>
+                    <button class="btn-secondary px-6 py-3 rounded-full">
+                        <i class="ph ph-arrow-right mr-2"></i>
+                        View All
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Match Card 1 -->
+                    <div class="glass p-6 rounded-2xl card-hover neon-glow">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-400">
+                                <i class="ph ph-cricket text-blue-400"></i>
+                                <span>Cricket • IPL 2024</span>
+                            </div>
+                            <span class="live-indicator text-red-400 font-bold text-sm pulse">LIVE</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center text-white font-bold">
+                                    MI
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Mumbai Indians</h3>
+                                    <p class="text-sm text-gray-400">185/4 (18.2)</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-2xl font-black text-blue-400">VS</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-right">
+                                <div>
+                                    <h3 class="font-bold text-lg">Chennai Super Kings</h3>
+                                    <p class="text-sm text-gray-400">Need 12 from 10</p>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-600 flex items-center justify-center text-white font-bold">
+                                    CSK
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-blue-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Mumbai</p>
+                                <p class="font-bold text-blue-400">1.85</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-gray-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Draw</p>
+                                <p class="font-bold">3.50</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-yellow-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Chennai</p>
+                                <p class="font-bold text-yellow-400">2.10</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Match Card 2 -->
+                    <div class="glass p-6 rounded-2xl card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-400">
+                                <i class="ph ph-soccer-ball text-green-400"></i>
+                                <span>Football • Premier League</span>
+                            </div>
+                            <span class="text-gray-400 text-sm">Today, 20:00</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-red-600 to-red-800 flex items-center justify-center text-white font-bold">
+                                    MU
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Manchester United</h3>
+                                    <p class="text-sm text-gray-400">Home</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-2xl font-black text-purple-400">VS</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-right">
+                                <div>
+                                    <h3 class="font-bold text-lg">Liverpool FC</h3>
+                                    <p class="text-sm text-gray-400">Away</p>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-red-700 flex items-center justify-center text-white font-bold">
+                                    LIV
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-red-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Man United</p>
+                                <p class="font-bold text-red-400">2.50</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-gray-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Draw</p>
+                                <p class="font-bold">3.20</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-red-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Liverpool</p>
+                                <p class="font-bold text-red-400">1.95</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Match Card 3 -->
+                    <div class="glass p-6 rounded-2xl card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-400">
+                                <i class="ph ph-basketball text-orange-400"></i>
+                                <span>Basketball • NBA</span>
+                            </div>
+                            <span class="text-gray-400 text-sm">Tomorrow, 02:30</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold">
+                                    LAL
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">LA Lakers</h3>
+                                    <p class="text-sm text-gray-400">Home</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-2xl font-black text-orange-400">VS</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-right">
+                                <div>
+                                    <h3 class="font-bold text-lg">Golden State Warriors</h3>
+                                    <p class="text-sm text-gray-400">Away</p>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center text-white font-bold">
+                                    GSW
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-purple-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Lakers</p>
+                                <p class="font-bold text-purple-400">1.75</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-gray-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Handicap</p>
+                                <p class="font-bold">1.90</p>
+                            </button>
+                            <button class="odds-button glass p-3 rounded-xl text-center hover:bg-blue-500/20 transition-all">
+                                <p class="text-xs text-gray-400 mb-1">Warriors</p>
+                                <p class="font-bold text-blue-400">2.25</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Casino Games -->
+            <section id="casino">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black text-glow">Live Casino & Slots</h2>
+                        <p class="text-gray-400 mt-2">Premium games with professional dealers</p>
+                    </div>
+                    <button class="btn-secondary px-6 py-3 rounded-full">
+                        <i class="ph ph-arrow-right mr-2"></i>
+                        All Games
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <!-- Game Card 1 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=400&auto=format&fit=crop" alt="Lightning Roulette" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold pulse">LIVE</span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Lightning Roulette</h3>
+                                <p class="text-xs text-gray-300">Evolution Gaming</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★★</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Card 2 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400&auto=format&fit=crop" alt="Blackjack" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold">HOT</span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Infinite Blackjack</h3>
+                                <p class="text-xs text-gray-300">Pragmatic Play</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★☆</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Card 3 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=400&auto=format&fit=crop" alt="Crazy Time" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">NEW</span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Crazy Time</h3>
+                                <p class="text-xs text-gray-300">Evolution Gaming</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★★</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Card 4 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=400&auto=format&fit=crop" alt="Teen Patti" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Live Teen Patti</h3>
+                                <p class="text-xs text-gray-300">Super Spade Games</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★☆</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Card 5 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=400&auto=format&fit=crop" alt="Poker" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Casino Hold'em</h3>
+                                <p class="text-xs text-gray-300">Evolution Gaming</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★★</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Card 6 -->
+                    <div class="game-card glass rounded-2xl overflow-hidden group">
+                        <div class="aspect-[3/4] relative">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400&auto=format&fit=crop" alt="Baccarat" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="font-bold text-white mb-1">Speed Baccarat</h3>
+                                <p class="text-xs text-gray-300">Ezugi</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-yellow-400">★★★★☆</span>
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full hover:bg-white/30 transition-all">
+                                        PLAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Promotions -->
+            <section id="promotions">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-black text-glow mb-4">Exclusive Promotions</h2>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                        Boost your winnings with our incredible bonuses and rewards
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Promotion 1 -->
+                    <div class="glass p-8 rounded-2xl card-hover neon-glow">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                                <i class="ph ph-gift text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-black mb-4 gradient-text">Welcome Bonus</h3>
+                            <div class="text-4xl font-black text-yellow-400 mb-2">200%</div>
+                            <p class="text-gray-400 mb-6">Up to ₹50,000 on your first deposit</p>
+                            <button class="btn-primary w-full py-3 rounded-full">
+                                CLAIM NOW
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Promotion 2 -->
+                    <div class="glass p-8 rounded-2xl card-hover">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                                <i class="ph ph-lightning text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-black mb-4 gradient-text">Daily Cashback</h3>
+                            <div class="text-4xl font-black text-blue-400 mb-2">15%</div>
+                            <p class="text-gray-400 mb-6">Get daily cashback on all losses</p>
+                            <button class="btn-secondary w-full py-3 rounded-full">
+                                LEARN MORE
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Promotion 3 -->
+                    <div class="glass p-8 rounded-2xl card-hover">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center">
+                                <i class="ph ph-trophy text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-black mb-4 gradient-text">VIP Program</h3>
+                            <div class="text-4xl font-black text-green-400 mb-2">∞</div>
+                            <p class="text-gray-400 mb-6">Exclusive rewards and benefits</p>
+                            <button class="btn-secondary w-full py-3 rounded-full">
+                                JOIN VIP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="glass border-t border-gray-800 mt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Company Info -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                                <i class="ph ph-lightning text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl font-black neon-text">BetBlitz</h1>
+                                <p class="text-sm text-gray-400">Ultimate Experience</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-400 text-lg mb-6 max-w-md">
+                            The ultimate destination for sports betting and casino gaming. Experience the thrill of winning with the best odds and premium games.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-500 transition-colors">
+                                <i class="ph ph-twitter-logo text-lg"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-500 transition-colors">
+                                <i class="ph ph-instagram-logo text-lg"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <i class="ph ph-facebook-logo text-lg"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-500 transition-colors">
+                                <i class="ph ph-youtube-logo text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-blue-400">Quick Links</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sports Betting</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Live Casino</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Slot Games</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Promotions</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">VIP Program</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Support -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-purple-400">Support</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Live Chat</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Responsible Gaming</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 BetBlitz. All rights reserved. | Licensed and regulated.
+                    </p>
+                    <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                        <img src="https://placehold.co/60x40/333/fff?text=18+" alt="18+" class="opacity-60">
+                        <img src="https://placehold.co/60x40/333/fff?text=SSL" alt="SSL" class="opacity-60">
+                        <img src="https://placehold.co/60x40/333/fff?text=SAFE" alt="Safe" class="opacity-60">
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize particles background
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#00d4ff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.1, random: false },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#00d4ff',
+                    opacity: 0.1,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // Modal functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function switchModal(currentModal, targetModal) {
+            closeModal(currentModal);
+            setTimeout(() => openModal(targetModal), 300);
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('bg-white', i === index);
+                indicator.classList.toggle('bg-opacity-100', i === index);
+                indicator.classList.toggle('bg-opacity-50', i !== index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Carousel indicators click handlers
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 5000);
+
+        // Form handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            showNotification('Logging you in...', 'success');
+            setTimeout(() => {
+                closeModal('login-modal');
+                showNotification('Welcome back!', 'success');
+            }, 2000);
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            showNotification('Creating your account...', 'success');
+            setTimeout(() => {
+                closeModal('signup-modal');
+                showNotification('Account created successfully!', 'success');
+            }, 2000);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            
+            text.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // GSAP animations
+        gsap.registerPlugin();
+
+        // Animate elements on scroll
+        gsap.utils.toArray('.card-hover').forEach(card => {
+            gsap.fromTo(card, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // Initialize welcome notification
+        setTimeout(() => {
+            showNotification('🎉 Welcome to BetBlitz! Claim your 200% bonus now!', 'success');
+        }, 1000);
+
+        // Close modals on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal('login-modal');
+                closeModal('signup-modal');
+            }
+        });
+
+        // Close modals on backdrop click
+        document.querySelectorAll('.fixed.inset-0').forEach(backdrop => {
+            backdrop.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    const modal = this.parentElement;
+                    if (modal.id.includes('modal')) {
+                        closeModal(modal.id);
+                    }
+                }
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading states to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.type !== 'submit' && !this.onclick) {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<div class="loading-spinner inline-block mr-2"></div>Loading...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
